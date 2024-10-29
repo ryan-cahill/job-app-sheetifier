@@ -1,0 +1,30 @@
+{
+  "name": "job-app-sheetifier",
+  "description": "add jobs to a google sheet in order to track job applications",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {},
+  "permissions": [
+    "activeTab",
+    "identity",
+    "storage"
+  ],
+  "background":  {
+    "service_worker": "service-worker.js"
+  },
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqKLCSWl2T1czfKEhCy6vnIS7ns1xcO3JUHckpHGKUc0qUY8flf1T3loG2KDhvf+Cu8hYKK2FbAmMPdtVobQbld/G2X0Xb683oqPhcMXeiVy14BtejZtgXWqKNFosEaZliD9PgmNWgVoZ+A3C4nfdgxHj93ZGiSEzSsJ8Cx2YHZQlsqExJSGEeT9WDdoOuu4hFfDxXAjP0CCSIKR2E6BNDf19GGXSPWeZUISJqcvpJ8GhmxBXneewSMtegg/963y0DCmMf5KIIz5RtWLa1Y1CfFUsNaOTAFvY/JX7w/nW+D+mHEmNY2lPweDWECokV5bphf9L1rRwZz//0kaBQMSM6QIDAQAB",
+  "oauth2": {
+    "client_id": "276765973735-pqg26v7nve74rg0t2pdafen5ep41bn0c.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/userinfo.profile",
+      "https://www.googleapis.com/auth/spreadsheets"
+    ]
+  },
+  "icons": {
+    "16": "icons/16x16.png",
+    "32": "icons/32x32.png",
+    "48": "icons/48x48.png",
+    "128": "icons/128x128.png"
+  }
+}
