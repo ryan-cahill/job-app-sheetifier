@@ -40,29 +40,26 @@ const sanitizeLinkedInUrl = (url) => { //
   return linkedInUrlRegex.exec(url)[0];
 };
 
-chrome.action.onClicked.addListener(tab => {
-  chrome.storage.local.get(['spreadsheetId'], (storageItems) => {
-    const spreadsheetId = storageItems.spreadsheetId;
-    if (!spreadsheetId) {
-      chrome.tabs.create({ url: 'index.html' });
-    } else {
-      chrome.identity.getAuthToken({ interactive: true }, (googleAuthToken) => {
-        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-          const activeTab = tabs[0];
-          const nextEmptyRow = await getNextEmptyRow(googleAuthToken, spreadsheetId);
-          const currentDate = new Date();
-          const companyName = parseNameFromLinkedIn(activeTab.title);
-          const postingUrl = sanitizeLinkedInUrl(activeTab.url);
-          const rowData = {
-            companyName,
-            date: `${currentDate.getMonth() + 1}/${currentDate.getDate()}`,
-            url: postingUrl,
-            nextEmptyRow,
-            spreadsheetId
-          };
-          await postNewRowData(googleAuthToken, rowData);
-        });
-      });
-    }
-  });
+chrome.action.onClicked.addListener(async (tab) => {
+  const spreadsheetId = (await chrome.storage.local.get('spreadsheetId')).spreadsheetId;
+  if (!spreadsheetId) {
+    chrome.tabs.create({ url: 'index.html' });
+  } else {
+    const googleAuthToken = (await chrome.identity.getAuthToken({ interactive: true })).token;
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    const activeTab = tabs[0];
+    const nextEmptyRow = await getNextEmptyRow(googleAuthToken, spreadsheetId);
+    const currentDate = new Date();
+    const companyName = parseNameFromLinkedIn(activeTab.title);
+    const postingUrl = sanitizeLinkedInUrl(activeTab.url);
+    const rowData = {
+      companyName,
+      date: `${currentDate.getMonth() + 1}/${currentDate.getDate()}`,
+      url: postingUrl,
+      nextEmptyRow,
+      spreadsheetId
+    };
+    await postNewRowData(googleAuthToken, rowData);
+  }
 });
